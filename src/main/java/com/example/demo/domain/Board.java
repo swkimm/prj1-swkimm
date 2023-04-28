@@ -11,4 +11,5 @@ public class Board {
 	private String body;
 	private LocalDateTime inserted;
 	private String writer;
+	
 }
