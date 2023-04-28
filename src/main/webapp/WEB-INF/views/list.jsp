@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Insert title here</title>
+<title>스프링 게시판(swkimm)</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
@@ -18,6 +18,7 @@
 
 	<div class="container-lg">
 		<h1>게시물 목록</h1>
+		<p>총 게시물 수 : ${pageInfo.numOfRecords }</p>
 		<!-- table.table>thead>tr>th*4^^tbody -->
 		<table class="table">
 			<thead>
@@ -60,6 +61,10 @@
 						<!-- 이전 버튼 -->
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageInfo.currentPage -1}"></c:param>
+							<!-- search 기능 + 페이징 처리 -->
+							<c:if test="${not empty param.search }">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item"><a class="page-link" href="${pageLink }"><i class="fa-solid fa-angle-left"></i></i></a></li>
 					</c:if>
@@ -68,6 +73,10 @@
 					<c:forEach begin="${pageInfo.leftPageNum }" end="${pageInfo.rightPageNum }" var="pageNum">
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageNum }"></c:param>
+							<!-- search 기능 + 페이징 처리 -->
+							<c:if test="${not empty param.search }">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item"><a class="page-link ${pageNum eq pageInfo.currentPage ? 'active' : '' }" href="${pageLink }">${pageNum }</a></li>
 					</c:forEach>
@@ -77,6 +86,10 @@
 						<!-- 다음 버튼 -->
 						<c:url value="/list" var="pageLink">
 							<c:param name="page" value="${pageInfo.currentPage +1}"></c:param>
+							<!-- search 기능 + 페이징 처리 -->
+							<c:if test="${not empty param.search }">
+								<c:param name="search" value="${param.search }"></c:param>
+							</c:if>
 						</c:url>
 						<li class="page-item"><a class="page-link" href="${pageLink }"><i class="fa-solid fa-angle-right"></i></a></li>
 						

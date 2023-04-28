@@ -53,22 +53,51 @@ public interface BoardMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	int insert(Board board);
 
-	
+	// 동적 SQL bind 문 사용하여 search 기능 구현
 	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
 			SELECT 
 				id,
 				title,
 				writer,
 				inserted
 			FROM Board
+			WHERE 
+					title LIKE #{pattern}
+				OR  body LIKE #{pattern}
+				OR	writer LIKE #{pattern}
 			ORDER BY id DESC
 			LIMIT #{startIndex}, #{rowPerPage}
+			</script>
 			""")
-	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage);
+	List<Board> selectAllPaging(Integer startIndex, Integer rowPerPage, String search);
 
 	@Select("""
+			<script>
+			<bind name="pattern" value="'%' + search + '%'" />
 			SELECT COUNT(*) FROM Board
+			WHERE 
+					title LIKE #{pattern}
+				OR  body LIKE #{pattern}
+				OR	writer LIKE #{pattern}
+			</script>
 			""")
-	Integer countAll();
+	Integer countAll(String search);
+	
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
