@@ -64,18 +64,21 @@ public class BoardController {
 
 //	@RequestMapping(value = "/modify/{id}", method = RequestMethod.POST)
 	@PostMapping("/modify/{id}")
-	public String modifyProcess(Board board, RedirectAttributes rttr) {
-
-		boolean ok = service.modify(board);
+	public String modifyProcess(Board board,
+			@RequestParam(value = "files", required = false) MultipartFile[] addFiles,
+			@RequestParam(value = "removeFiles", required = false) List<String> removeFileNames,
+			RedirectAttributes rttr) throws Exception {
+		
+		boolean ok = service.modify(board, addFiles, removeFileNames);
 
 		if (ok) {
 			// 해당 게시물 보기로 리디렉션
-			// rttr.addAttribute("success", "success");
+//			rttr.addAttribute("success", "success");
 			rttr.addFlashAttribute("message", board.getId() + "번 게시물이 수정되었습니다.");
 			return "redirect:/id/" + board.getId();
 		} else {
 			// 수정 form 으로 리디렉션
-			// rttr.addAttribute("fail", "fail");
+//			rttr.addAttribute("fail", "fail");
 			rttr.addFlashAttribute("message", board.getId() + "번 게시물이 수정되지 않았습니다.");
 			return "redirect:/modify/" + board.getId();
 		}
