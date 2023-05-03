@@ -21,7 +21,7 @@
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
 				<h1>게시물 작성</h1>
-				<form method="post">
+				<form method="post" enctype="multipart/form-data">
 					<div class="mb-3">
 						<label for="titleInput" class="form-label">제목</label>
 						<input id="titleInput" class="form-control" type="text" name="title" value="${board.title }" />
@@ -34,6 +34,13 @@
 						<label for="writerInput" class="form-label">작성자</label>
 						<input id="writerInput" class="form-control" type="text" name="writer" value="${board.writer }" />
 					</div>
+					
+					<!-- 파일 등록  -->
+					<div class="mb-3">
+					  	<label for="fileInput" class="form-label">그림 파일</label>
+					  	<input class="form-control" type="file" id="fileInput" multiple name="files" accept="image/*">
+					</div>
+					
 					<div class="mb-3">
 						<input class="btn btn-primary" type="submit" value="등록" />
 					</div>
