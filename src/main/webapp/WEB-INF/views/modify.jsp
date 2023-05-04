@@ -48,7 +48,7 @@
 							<div class="mb-3">
 								<!-- http: //localhost:8080/image/8190/Shaquille_Leonard_2022.jpg-->
 								<!-- http: //localhost:8080/image/게시물번호/fileName -->
-								<img class="img-fluid img-thumbnail" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" />
+								<img class="img-fluid img-thumbnail" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
 							</div>
 						</c:forEach>
 					</div>
@@ -72,6 +72,9 @@
 					<div class="mb-3">
 					  	<label for="fileInput" class="form-label">그림 파일</label>
 					  	<input class="form-control" type="file" id="fileInput" multiple name="files" accept="image/*">
+					  	<div class="form-test">
+					  		업로드 최대 크기 10MB, 한개의 파일 1MB를 초과할 수 없습니다.
+					  	</div>
 					</div>
 					
 					<div class="mb-3">

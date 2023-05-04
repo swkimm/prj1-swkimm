@@ -34,7 +34,7 @@
 							<div class="mb-3">
 								<!-- http: //localhost:8080/image/8190/Shaquille_Leonard_2022.jpg-->
 								<!-- http: //localhost:8080/image/게시물번호/fileName -->
-								<img class="img-fluid img-thumbnail" src="http://localhost:8080/image/${board.id }/${fileName}" alt="" />
+								<img class="img-fluid img-thumbnail" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
 							</div>
 						</c:forEach>
 					</div>

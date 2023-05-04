@@ -71,6 +71,7 @@ public class BoardController {
 		
 		boolean ok = service.modify(board, addFiles, removeFileNames);
 
+		
 		if (ok) {
 			// 해당 게시물 보기로 리디렉션
 //			rttr.addAttribute("success", "success");
