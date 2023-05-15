@@ -29,6 +29,19 @@ public class MemberController {
 		return service.checkId(id);
 	}
 	
+	@GetMapping("checkNickName/{nickName}")
+	@ResponseBody
+	public Map<String, Object> checkNickName(@PathVariable("nickName") String nickName) {
+		return service.checkNickName(nickName);
+	}
+	
+	@GetMapping("checkEmail/{email}")
+	@ResponseBody
+	public Map<String, Object> checkEmail(@PathVariable("email") String email) {
+		return service.checkEmail(email);
+	}
+	
+	
 	@GetMapping("signup")
 	@PreAuthorize("isAnonymous()")
 	public void signupForm() {
@@ -39,8 +52,6 @@ public class MemberController {
 	public void loginForm() {
 		
 	}
-	
-	
 	
 	@PostMapping("signup")
 	public String signupProcess(Member member, RedirectAttributes rttr) {
