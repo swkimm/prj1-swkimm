@@ -67,6 +67,7 @@ public interface BoardMapper {
 				b.id,
 				b.title,
 				b.writer,
+				b.hit,
 				b.inserted,
 				COUNT(f.id) fileCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
@@ -139,6 +140,20 @@ public interface BoardMapper {
 			""")
 
 	void deleteFileNameByBoardIdAndFileName(Integer boardId, String fileName);
+
+	@Select("""
+			SELECT id
+			FROM Board
+			WHERE writer = #{writer}
+			""")
+	List<Integer> selectBoardIdByWriter(String writer);
+
+	@Update("""
+			UPDATE Board
+			SET hit=hit+1
+			WHERE id=#{id};
+			""")
+	void hitPlus(Integer id);
 
 }
 

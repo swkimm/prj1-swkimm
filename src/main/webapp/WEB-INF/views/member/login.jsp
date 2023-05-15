@@ -18,6 +18,7 @@
 	<div class="container-lg">
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
+				<h1>로그인</h1>
 				<form method="post">
 					<div class="mb-3">
 						<label for="inputUserName" class="form-label"> 아이디</label>
@@ -25,7 +26,7 @@
 					</div>
 					<div class="mb-3"> 
 						<label for="inputPassword" class="form-label"> 암호</label>
-						<input id="inputPassword" class="form-control" type="text" name="password" /> <br /> 
+						<input id="inputPassword" class="form-control" type="password" name="password" /> <br /> 
 					</div>
 					<div class="mb-3">
 						<input class="btn btn-primary" type="submit" value="로그인" />

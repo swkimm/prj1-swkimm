@@ -26,6 +26,7 @@
 					<th>#</th>
 					<th>제목</th>
 					<th>작성자</th>
+					<th>조회수</th>
 					<th>작성일시</th>
 				</tr>
 			</thead>
@@ -40,6 +41,7 @@
 								</span>
 							</c:if></td>
 						<td>${board.writer }</td>
+						<td>${board.hit }</td>
 						<td>${board.inserted }</td>
 					</tr>
 				</c:forEach>

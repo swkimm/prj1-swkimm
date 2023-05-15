@@ -19,6 +19,9 @@ public class MemberService {
 	private MemberMapper mapper;
 	
 	@Autowired
+	private BoardService boardService;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	
@@ -48,6 +51,10 @@ public class MemberService {
 		// oldMember -> 암호화 암호, member -> 평문
 		if(passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
 			
+			// 이 회원이 작성한 게시물 row 삭제
+			boardService.removeByWriter(member.getId());
+			
+			// 회원 삭제 
 			cnt = mapper.deleteById(member.getId());
 		} 
 		return cnt == 1;
@@ -75,5 +82,10 @@ public class MemberService {
 		}
 		
 		return cnt == 1;
+	}
+
+	public Map<String, Object> checkId(String id) {
+		Member member = mapper.selectById(id);
+		return Map.of("available", member == null);
 	}
 }

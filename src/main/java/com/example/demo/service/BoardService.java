@@ -39,6 +39,7 @@ public class BoardService {
 
 	// 1개 아이디 상세 정보 조회
 	public Board getBoard(Integer id) {
+		mapper.hitPlus(id);
 		return mapper.selectById(id);
 	}
 
@@ -225,5 +226,15 @@ public boolean modify(Board board, MultipartFile[] addFiles, List<String> remove
 		// 검색 기능 추가
 		List<Board> list = mapper.selectAllPaging(startIndex, rowPerPage, search, type);
 		return Map.of("pageInfo", pageInfo, "boardList", list);
+
+	}
+
+	// 게시글이 있는 회원 탈퇴 시키기
+	public void removeByWriter(String writer) {
+		List<Integer> idList = mapper.selectBoardIdByWriter(writer);
+		
+		for (Integer id : idList) {
+			remove(id);
+		}
 	}
 }

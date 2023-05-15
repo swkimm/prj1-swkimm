@@ -10,8 +10,9 @@ public class Board {
 	private Integer id;
 	private String title;
 	private String body;
-	private LocalDateTime inserted;
 	private String writer;
+	private Integer hit;
+	private LocalDateTime inserted;
 	private List<String> fileName;
 	private Integer fileCount;
 	
