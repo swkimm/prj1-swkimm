@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,9 @@ public class BoardService {
 	// mapper에 일을 시킴 
 	@Autowired
 	private BoardMapper mapper;
+	
+	@Autowired
+	private BoardLikeMapper likeMapper;
 	
 	// 전체 리스트 조회
 	public List<Board> listBoard() {
@@ -236,5 +240,18 @@ public boolean modify(Board board, MultipartFile[] addFiles, List<String> remove
 		for (Integer id : idList) {
 			remove(id);
 		}
+	}
+
+	public Map<String, Object> like(Like like, Authentication authentication) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("like", false);
+		
+		like.setMemberId(authentication.getName());
+		Integer deleteCnt = likeMapper.delete(like);
+		if(deleteCnt != 1)  {
+			Integer insesrtCnt = likeMapper.insert(like);
+			result.put("like", true);
+		}
+		return result;
 	}
 }

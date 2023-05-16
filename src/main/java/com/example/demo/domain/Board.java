@@ -14,6 +14,8 @@ public class Board {
 	private Integer hit;
 	private LocalDateTime inserted;
 	private List<String> fileName;
+	
 	private Integer fileCount;
+	private Integer likeCount;
 	
 }

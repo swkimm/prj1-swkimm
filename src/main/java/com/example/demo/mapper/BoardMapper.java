@@ -21,13 +21,14 @@ public interface BoardMapper {
 	List<Board> selectAll();
 
 	@Select("""
-			SELECT 
+			SELECT
 				b.id,
 				b.title,
 				b.body,
 				b.inserted,
 				b.writer,
-				f.fileName
+				f.fileName,
+				(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			WHERE b.id = #{id}
 			""")
@@ -69,7 +70,8 @@ public interface BoardMapper {
 				b.writer,
 				b.hit,
 				b.inserted,
-				COUNT(f.id) fileCount
+				COUNT(f.id) fileCount,
+				(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			<where>
 				<if test="(type eq 'all') or (type eq 'title')">
@@ -112,30 +114,27 @@ public interface BoardMapper {
 
 	@Insert("""
 			INSERT INTO FileName (boardId, fileName)
-			VALUES (#{boardId}, #{fileName}) 
+			VALUES (#{boardId}, #{fileName})
 			""")
 //	@Options(useGeneratedKeys = true, keyProperty = "id")
 	Integer insertFileName(Integer boardId, String fileName);
 
-	
 	@Select("""
-			SELECT fileName FROM FileName 
+			SELECT fileName FROM FileName
 			WHERE boardId = ${boardId}
-			
+
 			""")
 	List<String> selectFileNamesByBoardId(Integer boardId);
 
-	
 	@Delete("""
-			DELETE FROM FileName 
+			DELETE FROM FileName
 			WHERE boardId = ${boardId};
 			""")
 	void deleteFileNameByBoardId(Integer boardId);
 
-	
 	@Delete("""
 			DELETE FROM FileName
-			WHERE 	boardId = #{boardId} 
+			WHERE 	boardId = #{boardId}
 				AND fileName = #{fileName}
 			""")
 
@@ -155,16 +154,5 @@ public interface BoardMapper {
 			""")
 	void hitPlus(Integer id);
 
+
 }
-
-
-
-
-
-
-
-
-
-
-
-

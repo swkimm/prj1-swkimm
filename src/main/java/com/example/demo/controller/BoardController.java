@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.*;
 import org.springframework.security.core.*;
 import org.springframework.stereotype.*;
@@ -52,6 +53,7 @@ public class BoardController {
 		// 1. request param
 		// 2. business logic
 		Board board = service.getBoard(id);
+//		service.like(Like, null)
 		// 3. add attribute
 		model.addAttribute("board", board);
 		// 4. forward/redirect
@@ -133,4 +135,38 @@ public class BoardController {
 			return "redirect:/add";
 		}
 	}
+	@PostMapping("/like")
+	@ResponseBody
+	public ResponseEntity<Map<String, Object>> like(@RequestBody Like like, Authentication authentication) {
+		
+		if( authentication == null) {
+			return ResponseEntity
+					.status(403)
+					.body(Map.of("message", "로그인 후 좋아요 클릭해주세요."));
+		} else {
+			return ResponseEntity
+					.ok()
+					.body(service.like(like, authentication));
+		}
+		
+		
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
