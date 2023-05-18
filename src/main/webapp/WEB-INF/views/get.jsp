@@ -17,12 +17,14 @@
 
 	<my:navBar></my:navBar>
 	<my:alert></my:alert>
+
+	<!-- toast -->
 	<div class="toast-container top-0 start-50 translate-middle-x p-3">
 		<div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="toast-header">
-				<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			<div class="d-flex">
+				<div class="toast-body"></div>
+				<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
 			</div>
-			<div class="toast-body"></div>
 		</div>
 	</div>
 
@@ -31,54 +33,71 @@
 		<!-- .row.justify-content-center>.col-12.col-md-8.col-lg-6 -->
 		<div class="row justify-content-center">
 			<div class="col-12 col-md-8 col-lg-6">
-				<h1>
-					<span id="boardIdText"> ${board.id } </span> 번 게시물
-				</h1>
-				<div>
-					<h1>
-						<span id="likeIcon"> <i class="fa-regular fa-thumbs-up"></i>
-						</span> 
-							<span id="likeNumber"> 
-								${board.likeCount }
+				<div class="d-flex">
+					<div class="me-auto">
+						<h1>
+							<span id="boardIdText"> ${board.id } </span>
+							번게시물
+						</h1>
+					</div>
+
+					<div>
+
+						<h1>
+							<span id="likeIcon">
+								<c:if test="${board.liked }">
+									<i class="fa-solid fa-thumbs-up"></i>
+								</c:if>
+
+								<c:if test="${not board.liked }">
+									<i class="fa-regular fa-thumbs-up"></i>
+								</c:if>
 							</span>
-					</h1>
+							<span id="likeNumber"> ${board.likeCount } </span>
+						</h1>
+					</div>
 				</div>
+
 				<div>
 					<div class="mb-3">
-						<label for="" class="form-label">제목</label> <input type="text" class="form-control" value="${board.title }" readonly />
+						<label for="" class="form-label">제목</label>
+						<input type="text" class="form-control" value="${board.title }" readonly />
 					</div>
 
 					<!-- 그림 파일 출력 -->
 					<div class="mb-3">
 						<c:forEach items="${board.fileName }" var="fileName">
 							<div class="mb-3">
-								<!-- http: //localhost:8080/image/8190/Shaquille_Leonard_2022.jpg-->
-								<!-- http: //localhost:8080/image/게시물번호/fileName -->
-								<img class="img-fluid img-thumbnail" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
+								<img class="img-thumbnail img-fluid" src="${bucketUrl }/${board.id }/${fileName}" alt="" />
 							</div>
 						</c:forEach>
 					</div>
+
 
 					<div class="mb-3">
 						<label for="" class="form-label">본문</label>
 						<textarea class="form-control" readonly rows="10">${board.body }</textarea>
 					</div>
 					<div class="mb-3">
-						<label for="" class="form-label">작성자</label> <input type="text" class="form-control" value="${board.writer }" readonly />
+						<label for="" class="form-label">작성자</label>
+						<input type="text" class="form-control" value="${board.writer }" readonly />
 					</div>
 					<div class="mb-3">
-						<label for="" class="form-label">작성일시</label> <input type="text" readonly class="form-control" value="${board.inserted }" />
+						<label for="" class="form-label">작성일시</label>
+						<input type="text" readonly class="form-control" value="${board.inserted }" />
 					</div>
 
 					<sec:authorize access="isAuthenticated()">
 						<sec:authentication property="name" var="userId" />
 						<c:if test="${userId eq board.writer }">
 							<div>
+
 								<a class="btn btn-secondary" href="/modify/${board.id }">수정</a>
 								<button id="removeButton" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">삭제</button>
 							</div>
 						</c:if>
 					</sec:authorize>
+
 				</div>
 			</div>
 		</div>
@@ -87,6 +106,7 @@
 	<sec:authorize access="isAuthenticated()">
 		<sec:authentication property="name" var="userId" />
 		<c:if test="${userId eq board.writer }">
+
 			<div class="d-none">
 				<form action="/remove" method="post" id="removeForm">
 					<input type="text" name="id" value="${board.id }" />
@@ -117,13 +137,7 @@
 
 	<script src="/js/board/like.js"></script>
 
-
 </body>
 </html>
-
-
-
-
-
 
 

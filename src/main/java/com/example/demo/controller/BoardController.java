@@ -49,10 +49,10 @@ public class BoardController {
 	}
 
 	@GetMapping("/id/{id}")
-	public String board(@PathVariable("id") Integer id, Model model) {
+	public String board(@PathVariable("id") Integer id, Model model, Authentication authentication) {
 		// 1. request param
 		// 2. business logic
-		Board board = service.getBoard(id);
+		Board board = service.getBoard(id, authentication);
 //		service.like(Like, null)
 		// 3. add attribute
 		model.addAttribute("board", board);

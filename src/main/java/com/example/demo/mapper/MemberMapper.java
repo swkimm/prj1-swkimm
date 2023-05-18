@@ -28,7 +28,7 @@ public interface MemberMapper {
 			""")
 	@ResultMap("memberMap")
 	Member selectById(String id);
-	
+
 	@Select("""
 			SELECT *
 			FROM Member
@@ -36,55 +36,35 @@ public interface MemberMapper {
 			""")
 	Member selectByNickName(String nickName);
 
-
 	@Select("""
-			SELECT * 
+			SELECT *
 			FROM Member
 			WHERE email = #{email}
 			""")
 	Member selectByEmail(String email);
-	
+
 	@Delete("""
 			DELETE FROM Member
-			WHERE id = #{id}			
+			WHERE id = #{id}
 			""")
 	Integer deleteById(String id);
 
-	
-	
 	@Update("""
 			<script>
 			UPDATE Member
-			SET 
+			SET
 				<if test="password neq null and password neq ''">
 				password = #{password},
 				</if>
-				
+
 				nickName = #{nickName},
 				email = #{email}
 			WHERE
 				id = #{id}
-				
+
 				</script>
 			""")
 	Integer update(Member member);
 
 	
-	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

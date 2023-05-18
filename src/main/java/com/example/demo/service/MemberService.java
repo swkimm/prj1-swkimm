@@ -23,6 +23,9 @@ public class MemberService {
 	private BoardService boardService;
 	
 	@Autowired
+	private BoardLikeMapper likeMapper;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	
@@ -54,6 +57,9 @@ public class MemberService {
 			
 			// 이 회원이 작성한 게시물 row 삭제
 			boardService.removeByWriter(member.getId());
+			
+			// 
+			likeMapper.deleteByMemberId(member.getId());
 			
 			// 회원 삭제 
 			cnt = mapper.deleteById(member.getId());
@@ -124,4 +130,6 @@ public class MemberService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

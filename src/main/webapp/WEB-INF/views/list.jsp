@@ -25,7 +25,7 @@
 				<tr>
 					<th>#</th>
 					<th>제목</th>
-					<th><i class="fa-regular fa-thumbs-up"></i></th>
+					<th><i class="fa-solid fa-thumbs-up"></i></th>
 					<th>작성자</th>
 					<th>조회수</th>
 					<th>작성일시</th>

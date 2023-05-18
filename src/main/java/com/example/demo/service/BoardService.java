@@ -42,9 +42,18 @@ public class BoardService {
 	}
 
 	// 1개 아이디 상세 정보 조회
-	public Board getBoard(Integer id) {
+	public Board getBoard(Integer id, Authentication authentication) {
 		mapper.hitPlus(id);
-		return mapper.selectById(id);
+		Board board = mapper.selectById(id);
+		
+		if( authentication != null) {
+			Like like = likeMapper.select(id, authentication.getName());
+			if(like != null) {
+				board.setLiked(true);
+			}
+		}
+		
+		return board;
 	}
 
 	// 수정 (Update) 
@@ -120,6 +129,10 @@ public boolean modify(Board board, MultipartFile[] addFiles, List<String> remove
 
 	// 삭제 (remove)
 	public boolean remove(Integer id) {
+		
+		// 좋아요 테이블 지우기
+		likeMapper.deleteByBoardId(id);
+		
 		// 파일명 조회
 		List<String> fileNames = mapper.selectFileNamesByBoardId(id);
 		System.out.println(fileNames);
@@ -252,6 +265,12 @@ public boolean modify(Board board, MultipartFile[] addFiles, List<String> remove
 			Integer insesrtCnt = likeMapper.insert(like);
 			result.put("like", true);
 		}
+		Integer count = likeMapper.countByBoardId(like.getBoardId());
+		result.put("count", count);
 		return result;
+	}
+
+	public Board getBoard(Integer id) {
+		return getBoard(id, null);
 	}
 }
