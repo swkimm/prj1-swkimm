@@ -71,7 +71,10 @@ public interface BoardMapper {
 				b.hit,
 				b.inserted,
 				COUNT(f.id) fileCount,
-				(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount
+				(SELECT COUNT(*) FROM BoardLike WHERE boardId = b.id) likeCount, 
+				(SELECT COUNT(*)
+				 FROM Comment 
+				 WHERE boardId = b.id) commentCount
 			FROM Board b LEFT JOIN FileName f ON b.id = f.boardId
 			<where>
 				<if test="(type eq 'all') or (type eq 'title')">

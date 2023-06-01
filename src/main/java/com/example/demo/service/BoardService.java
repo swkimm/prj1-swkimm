@@ -22,6 +22,9 @@ import software.amazon.awssdk.services.s3.model.*;
 public class BoardService {
 	
 	@Autowired
+	private CommentMapper commentMapper;
+	
+	@Autowired
 	private S3Client s3;
 	
 	@Value("${aws.s3.bucketName}")
@@ -130,6 +133,7 @@ public boolean modify(Board board, MultipartFile[] addFiles, List<String> remove
 	// 삭제 (remove)
 	public boolean remove(Integer id) {
 		
+		commentMapper.deleteByBoardId(id);
 		// 좋아요 테이블 지우기
 		likeMapper.deleteByBoardId(id);
 		

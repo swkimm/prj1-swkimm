@@ -19,4 +19,6 @@ public class Board {
 	private Integer likeCount;
 	private boolean liked;
 	
+	private Integer commentCount;
+	
 }

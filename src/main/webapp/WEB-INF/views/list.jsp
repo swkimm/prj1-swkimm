@@ -40,7 +40,17 @@
 								 <i class="fa-solid fa-images"></i> 
 								 	${board.fileCount }
 								</span>
-							</c:if></td>
+							</c:if>
+							
+							<c:if test="${board.commentCount > 0}"> 
+								<span class="badge text-bg-dark">
+								 <i class="fa-solid fa-comments"></i> 
+								 	${board.commentCount }
+								</span>
+							</c:if>
+							
+							
+							</td>
 						<td>${board.likeCount }</td>
 						<td>${board.writer }</td>
 						<td>${board.hit }</td>

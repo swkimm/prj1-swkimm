@@ -15,28 +15,30 @@ import com.example.demo.mapper.*;
 @Service
 @Transactional(rollbackFor = Exception.class)
 public class MemberService {
+
+	@Autowired
+	private CommentMapper commentMapper;
 	
 	@Autowired
 	private MemberMapper mapper;
-	
+
 	@Autowired
 	private BoardService boardService;
-	
+
 	@Autowired
 	private BoardLikeMapper likeMapper;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
-	
+
 	public boolean signup(Member member) {
-		
-			// 암호 암호화
-			String plain = member.getPassword();
-			member.setPassword(passwordEncoder.encode(plain));
-			
-			int cnt = mapper.insert(member);
-			return cnt == 1;
+
+		// 암호 암호화
+		String plain = member.getPassword();
+		member.setPassword(passwordEncoder.encode(plain));
+
+		int cnt = mapper.insert(member);
+		return cnt == 1;
 	}
 
 	public List<Member> listMember() {
@@ -50,44 +52,46 @@ public class MemberService {
 	public boolean remove(Member member) {
 		Member oldMember = mapper.selectById(member.getId());
 		int cnt = 0;
-		// 암호가 같으면? 
+		// 암호가 같으면?
+		
+		commentMapper.deleteByMemberId(member.getId());
+		
 //		if (oldMember.getPassword().equals(member.getPassword())) {
 		// oldMember -> 암호화 암호, member -> 평문
-		if(passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
-			
+		if (passwordEncoder.matches(member.getPassword(), oldMember.getPassword())) {
+
 			// 이 회원이 작성한 게시물 row 삭제
 			boardService.removeByWriter(member.getId());
-			
-			// 
+
+			//
 			likeMapper.deleteByMemberId(member.getId());
-			
-			// 회원 삭제 
+
+			// 회원 삭제
 			cnt = mapper.deleteById(member.getId());
-		} 
+		}
 		return cnt == 1;
-		
+
 	}
 
 	public boolean modify(@ModelAttribute Member member, String oldPassword) {
-		
-		// 패스워드를 바꾸기 위해 입력했다면 
-		if(!member.getPassword().isBlank())	{
+
+		// 패스워드를 바꾸기 위해 입력했다면
+		if (!member.getPassword().isBlank()) {
 			// 입력된 패스워드를 암호화
 			String plain = member.getPassword();
 			member.setPassword(passwordEncoder.encode(plain));
 		}
-		
+
 		Member oldMember = mapper.selectById(member.getId());
 
 		int cnt = 0;
-		
-		
+
 //		if (oldMember.getPassword().equals(oldPassword)) {
 		if (passwordEncoder.matches(oldPassword, oldMember.getPassword())) {
 			// 기존 암호와 같다면
 			cnt = mapper.update(member);
 		}
-		
+
 		return cnt == 1;
 	}
 
@@ -95,8 +99,6 @@ public class MemberService {
 		Member member = mapper.selectById(id);
 		return Map.of("available", member == null);
 	}
-
-	
 
 	public Map<String, Object> checkMemberId(String id) {
 		Member member = mapper.selectById(id);
@@ -108,17 +110,17 @@ public class MemberService {
 
 	public Map<String, Object> checkNickName(String nickName, Authentication authentication) {
 		Member member = mapper.selectByNickName(nickName);
-		if(authentication != null) {
+		if (authentication != null) {
 			Member oldMember = mapper.selectById(authentication.getName());
 			return Map.of("available", member == null || oldMember.getNickName().equals(nickName));
 		} else {
 			return Map.of("available", member == null);
 		}
 	}
-	
+
 	public Map<String, Object> checkEmail(String email, Authentication authentication) {
 		Member member = mapper.selectByEmail(email);
-		if(authentication != null) {
+		if (authentication != null) {
 			Member oldMember = mapper.selectById(authentication.getName());
 			return Map.of("available", member == null || oldMember.getEmail().equals(email));
 		} else {
@@ -130,6 +132,5 @@ public class MemberService {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }
